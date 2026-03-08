@@ -12,7 +12,8 @@ struct employee {
 };
 
 bool RunProcess(const std::string& cmdLine) {
-    STARTUPINFOA si = {};
+    STARTUPINFOA si;
+    ZeroMemory(&si, sizeof(STARTUPINFO));
     si.cb = sizeof(si);
     PROCESS_INFORMATION pi = {};
 
@@ -104,7 +105,6 @@ int main() {
     std::cout << "Enter number of records: ";
     std::cin >> recordCount;
 
-    // Step 1: Run Creator
     std::ostringstream creatorCmd;
     creatorCmd << "Creator.exe " << binaryFile << " " << recordCount;
 
@@ -114,10 +114,8 @@ int main() {
         return 1;
     }
 
-    // Step 2: Display binary file contents
     PrintBinaryFile(binaryFile);
 
-    // Step 3: Get report parameters
     std::string reportFile;
     double hourlyRate;
 
@@ -127,7 +125,6 @@ int main() {
     std::cout << "Enter hourly rate: ";
     std::cin >> hourlyRate;
 
-    // Step 4: Run Reporter
     std::ostringstream reporterCmd;
     reporterCmd << "Reporter.exe " << binaryFile << " " << reportFile << " " << hourlyRate;
 
@@ -137,7 +134,6 @@ int main() {
         return 1;
     }
 
-    // Step 5: Display report
     PrintTextFile(reportFile);
 
     return 0;
